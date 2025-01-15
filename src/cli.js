@@ -158,3 +158,55 @@ export const startGcdGame = () => {
     
     game();
 }
+
+export const startProgressionGame = () => {
+    const roundsCount = 3;
+    
+    function generateProgression() {
+      const progressionLength = Math.floor(Math.random() * 6) + 5; // от 5 до 10
+      const start = Math.floor(Math.random() * 50);
+      const step = Math.floor(Math.random() * 10) + 1; // шаг от 1 до 10
+      const progression = [];
+      for (let i = 0; i < progressionLength; i += 1) {
+        progression.push(start + step * i);
+      }
+      return progression;
+    }
+    
+    
+    function gameRound(userName) {
+      const progression = generateProgression();
+      const hiddenIndex = Math.floor(Math.random() * progression.length);
+      const correctAnswer = progression[hiddenIndex];
+      progression[hiddenIndex] = '..';
+    
+      console.log(`Question: ${progression.join(' ')}`);
+      const userAnswer = readlineSync.question('Your answer: ');
+    
+      if (parseInt(userAnswer, 10) === correctAnswer) {
+        console.log('Correct!');
+        return true;
+      }
+    
+      console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
+      console.log(`Let's try again, ${userName}!`);
+      return false;
+    }
+    
+    function game() {
+      console.log('Welcome to the Brain Games!');
+      const userName = readlineSync.question('May I have your name? ');
+      console.log(`Hello, ${userName}!`);
+      console.log('What number is missing in the progression?');
+    
+      for (let i = 0; i < roundsCount; i += 1) {
+        if (!gameRound(userName)) {
+          return;
+        }
+      }
+    
+      console.log(`Congratulations, ${userName}!`);
+    }
+    
+    game();
+}
