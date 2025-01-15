@@ -210,3 +210,57 @@ export const startProgressionGame = () => {
     
     game();
 }
+
+export const startPrimeGame = () => {
+    const roundsCount = 3;
+    
+    function isPrime(num) {
+      if (num <= 1) {
+        return false;
+      }
+      for (let i = 2; i <= Math.sqrt(num); i += 1) {
+        if (num % i === 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+    
+    
+    function gameRound(userName) {
+      const number = Math.floor(Math.random() * 100) + 1; // генерируем числа от 1 до 100
+    
+      console.log(`Question: ${number}`);
+      const userAnswer = readlineSync.question('Your answer: ');
+      const correctAnswer = isPrime(number) ? 'yes' : 'no';
+    
+      if (userAnswer === correctAnswer) {
+        console.log('Correct!');
+        return true;
+      }
+    
+      console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
+      console.log(`Let's try again, ${userName}!`);
+      return false;
+    }
+    
+    function game() {
+      console.log('Welcome to the Brain Games!');
+      const userName = readlineSync.question('May I have your name? ');
+      console.log(`Hello, ${userName}!`);
+      console.log('Answer "yes" if given number is prime. Otherwise answer "no".');
+    
+    
+      for (let i = 0; i < roundsCount; i += 1) {
+        if (!gameRound(userName)) {
+          return;
+        }
+      }
+    
+    
+      console.log(`Congratulations, ${userName}!`);
+    }
+    
+    
+    game();
+}
