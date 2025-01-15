@@ -109,3 +109,52 @@ export const startCalculation = () => {
 
     game();
 }
+
+export const startGcdGame = () => {
+    const roundsCount = 3;
+    
+    function gcd(a, b) {
+      while (b !== 0) {
+        const temp = b;
+        b = a % b;
+        a = temp;
+      }
+      return a;
+    }
+    
+    function gameRound(userName) {
+      const num1 = Math.floor(Math.random() * 100) + 1; // генерируем числа от 1 до 100
+      const num2 = Math.floor(Math.random() * 100) + 1;
+    
+      console.log(`Question: ${num1} ${num2}`);
+      const userAnswer = readlineSync.question('Your answer: ');
+      const correctAnswer = gcd(num1, num2);
+    
+      if (parseInt(userAnswer, 10) === correctAnswer) {
+        console.log('Correct!');
+        return true;
+      }
+    
+      console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
+      console.log(`Let's try again, ${userName}!`);
+      return false;
+    }
+    
+    
+    function game() {
+      console.log('Welcome to the Brain Games!');
+      const userName = readlineSync.question('May I have your name? ');
+      console.log(`Hello, ${userName}!`);
+      console.log('Find the greatest common divisor of given numbers.');
+    
+      for (let i = 0; i < roundsCount; i += 1) {
+        if (!gameRound(userName)) {
+          return;
+        }
+      }
+    
+      console.log(`Congratulations, ${userName}!`);
+    }
+    
+    game();
+}
